@@ -25,6 +25,8 @@ services:
       - postgres
   postgres:
     image: postgres
+    env_file:
+    - .env
     restart: always
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
@@ -33,7 +35,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - docker-nest-postgres:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
 
 volumes:
-  docker-nest-postgres:
+  postgres:

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { MainExceptionFilter } from './app-exception-filters/main-exception.filter';
+import { DBModule } from './DB/db.module';
 
 @Module({
   imports: [
@@ -9,6 +10,7 @@ import { MainExceptionFilter } from './app-exception-filters/main-exception.filt
       isGlobal: true,
       envFilePath: ['.env'],
     }),
+    DBModule,
   ],
   controllers: [],
   providers: [
