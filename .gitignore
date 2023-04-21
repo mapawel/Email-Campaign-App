@@ -1,5 +1,7 @@
 .env*
 !.env.*.example
+.vscode
+
 # compiled output
 /dist
 /node_modules
