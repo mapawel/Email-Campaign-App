@@ -1,21 +1,29 @@
 import { DataSource } from 'typeorm';
+import { DBProviderType } from './db-provider.type';
+import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
 
-export const dbProviders = [
-  {
-    provide: 'DATA_SOURCE',
-    useFactory: async () => {
-      const dataSource = new DataSource({
-        type: 'postgres',
-        host: process.env.POSTGRES_HOST,
-        port: +process.env.POSTGRES_PORT,
-        username: process.env.POSTGRES_USER,
-        password: process.env.POSTGRES_PASSWORD,
-        database: process.env.POSTGRES_DB,
-        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-        synchronize: true,
-      });
+@Injectable()
+export class DBProvider {
+  constructor(private configService: ConfigService) {}
 
-      return dataSource.initialize();
-    },
-  },
-];
+  public getDBProvider(): DBProviderType {
+    return {
+      provide: 'DATA_SOURCE',
+      useFactory: async () => {
+        const dataSource = new DataSource({
+          type: 'postgres',
+          host: this.configService.get('POSTGRES_HOST'),
+          port: this.configService.get('POSTGRES_PORT'),
+          username: this.configService.get('POSTGRES_USER'),
+          password: this.configService.get('POSTGRES_PASSWORD'),
+          database: this.configService.get('POSTGRES_DB'),
+          entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+          synchronize: true,
+        });
+
+        return dataSource.initialize();
+      },
+    };
+  }
+}
