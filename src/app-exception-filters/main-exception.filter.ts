@@ -10,7 +10,7 @@ import { Response } from 'express';
 
 @Catch()
 export class MainExceptionFilter implements ExceptionFilter {
-  private readonly logger: LoggerService = new Logger();
+  private readonly logger: LoggerService = new Logger(MainExceptionFilter.name);
 
   catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -18,7 +18,7 @@ export class MainExceptionFilter implements ExceptionFilter {
     const status =
       exception instanceof HttpException ? exception.getStatus() : 500;
 
-    this.logger.error(exception.stack, MainExceptionFilter.name);
+    this.logger.error(exception.stack);
 
     response.status(status).json({
       message:
