@@ -69,36 +69,16 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## App running in development mode locally with watch mode
+**You need to have DOCKER on your machine installed, then:**
 
 ```bash
-$ npm install
+$ docker-compose up -d 
 ```
-
-## Running the app
-
+tnem to stop:
 ```bash
-# development
-$ npm run start
+$ docker-compose down 
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ## Support
