@@ -18,7 +18,7 @@ export class MainExceptionFilter implements ExceptionFilter {
     const status =
       exception instanceof HttpException ? exception.getStatus() : 500;
 
-    this.logger.error(exception.stack);
+    this.logger.error(exception);
 
     response.status(status).json({
       message:
