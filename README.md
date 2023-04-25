@@ -1,14 +1,13 @@
 # Email Campaign App
 
-### a backend app for managing email campaigns,
+### A backend app for managing email campaigns,
 
-**based on:**
+**Tech Stack:**
 
--   Nestjs (TS),
--   OOP,
--   PostgreSQL and TypeORM,
--   Auth0,
--   integrating many e-mail providers
+-   Nestjs
+-   PostgreSQL and TypeORM
+-   Auth0
+-   AWS
 -   Docker
 
 ## Objectives
