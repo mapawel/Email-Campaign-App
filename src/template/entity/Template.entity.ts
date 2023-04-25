@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Campaign } from 'src/campaign/entity/Campaign.entity';
 
 @Entity()
 export class Template {
@@ -10,4 +11,16 @@ export class Template {
 
     @Column()
     description: string;
+
+    @Column()
+    createdBy: string;
+
+    @Column()
+    updatedBy: string;
+
+    @Column()
+    fileId: string;
+
+    @OneToMany(() => Campaign, (campaign) => campaign.template, { eager: true})
+    campaigns: Campaign[];
 }

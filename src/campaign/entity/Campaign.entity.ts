@@ -1,6 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToMany,
+    ManyToOne,
+    JoinColumn,
+} from 'typeorm';
 import { CampaignStatus } from '../status/campaign-status.enum';
 import { MailContentType } from 'src/template/types/Mail-content.type';
+import { Template } from 'src/template/entity/Template.entity';
+import { EmailProvider } from '../../email-provider/entity/Email-provider.entity';
 
 @Entity()
 export class Campaign {
@@ -10,6 +19,9 @@ export class Campaign {
     @Column()
     name: string;
 
+    @Column()
+    descritpion: string;
+
     @Column({
         type: 'enum',
         enum: CampaignStatus,
@@ -17,8 +29,11 @@ export class Campaign {
     })
     status: CampaignStatus;
 
-    @Column()
-    templateId: number;
+    @ManyToOne(() => Template, (template) => template.campaigns, {
+        cascade: true,
+    })
+    @JoinColumn()
+    template: Template;
 
     @Column('json')
     content: MailContentType;
@@ -27,13 +42,18 @@ export class Campaign {
     eMails: string[];
 
     @Column()
-    manager: number; // user id from Auth0
+    manager: string; // user id from Auth0
 
     @Column('simple-array')
-    employees: number[];
+    employees: string[];
 
-    @Column()
-    eMailProvider: number;
+    @ManyToOne(
+        () => EmailProvider,
+        (eMailProvider) => eMailProvider.campaigns,
+        { cascade: true },
+    )
+    @JoinColumn()
+    eMailProvider: EmailProvider;
 
     @Column()
     preparedAt: Date;
@@ -48,11 +68,11 @@ export class Campaign {
     errorReason: string;
 
     @Column()
-    preparedBy: number; // user id from Auth0
+    preparedBy: string; // user id from Auth0
 
     @Column()
-    executedBy: number; // user id from Auth0
+    executedBy: string; // user id from Auth0
 
     @Column()
-    updatedBy: number; // user id from Auth0
+    updatedBy: string; // user id from Auth0
 }

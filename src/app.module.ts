@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_FILTER } from '@nestjs/core';
 import { MainExceptionFilter } from './app-exception-filters/main-exception.filter';
+import { Campaign } from './campaign/entity/Campaign.entity';
+import { Template } from './template/entity/Template.entity';
 
 @Module({
     imports: [
@@ -21,10 +23,11 @@ import { MainExceptionFilter } from './app-exception-filters/main-exception.filt
                 database: configService.get('POSTGRES_DB'),
                 entities: [__dirname + '/**/*.entity{.ts,.js}'],
                 synchronize: true,
+                logNotifications: true,
             }),
             inject: [ConfigService],
         }),
-        TypeOrmModule.forFeature([]),
+        TypeOrmModule.forFeature([Template, Campaign]),
     ],
     controllers: [],
     providers: [
