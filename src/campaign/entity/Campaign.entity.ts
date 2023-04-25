@@ -2,7 +2,6 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    OneToMany,
     ManyToOne,
     JoinColumn,
 } from 'typeorm';
@@ -20,7 +19,7 @@ export class Campaign {
     name: string;
 
     @Column()
-    descritpion: string;
+    description: string;
 
     @Column({
         type: 'enum',
@@ -30,49 +29,57 @@ export class Campaign {
     status: CampaignStatus;
 
     @ManyToOne(() => Template, (template) => template.campaigns, {
-        cascade: true,
+        eager: true,
     })
     @JoinColumn()
     template: Template;
 
-    @Column('json')
+    @ManyToOne(
+        () => EmailProvider,
+        (eMailProvider) => eMailProvider.campaigns,
+        {
+            eager: true,
+        },
+    )
+    @JoinColumn()
+    eMailProvider: EmailProvider;
+
+    @Column('json', { nullable: true })
     content: MailContentType;
 
-    @Column('simple-array')
+    @Column({ nullable: true })
+    eMailTitle: string;
+
+    @Column('simple-array', { nullable: true })
     eMails: string[];
 
     @Column()
     manager: string; // user id from Auth0
 
-    @Column('simple-array')
+    @Column('simple-array', { nullable: true })
     employees: string[];
 
-    @ManyToOne(
-        () => EmailProvider,
-        (eMailProvider) => eMailProvider.campaigns,
-        { cascade: true },
-    )
-    @JoinColumn()
-    eMailProvider: EmailProvider;
-
     @Column()
-    preparedAt: Date;
-
-    @Column()
-    executedAt: Date;
-
-    @Column()
-    errorAt: Date;
-
-    @Column()
-    errorReason: string;
-
-    @Column()
-    preparedBy: string; // user id from Auth0
-
-    @Column()
-    executedBy: string; // user id from Auth0
+    updatedAt: Date;
 
     @Column()
     updatedBy: string; // user id from Auth0
+
+    @Column({ nullable: true })
+    preparedAt: Date;
+
+    @Column({ nullable: true })
+    preparedBy: string; // user id from Auth0
+
+    @Column({ nullable: true })
+    executedAt: Date;
+
+    @Column({ nullable: true })
+    executedBy: string; // user id from Auth0
+
+    @Column({ nullable: true })
+    errorAt: Date;
+
+    @Column({ nullable: true })
+    errorReason: string;
 }

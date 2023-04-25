@@ -1,17 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { Campaign } from "../../campaign/entity/Campaign.entity";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Campaign } from '../../campaign/entity/Campaign.entity';
 
 @Entity()
 export class EmailProvider {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  name: string;
+    @Column()
+    name: string;
 
-  @Column()
-  eMail: string
+    @Column()
+    eMail: string;
 
-  @OneToMany(() => Campaign, (campaign) => campaign.eMailProvider, { eager: true})
-  campaigns: Campaign[];
+    @OneToMany(() => Campaign, (campaign) => campaign.eMailProvider)
+    campaigns: Campaign[];
 }
