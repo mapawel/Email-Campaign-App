@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_FILTER } from '@nestjs/core';
 import { MainExceptionFilter } from './app-exception-filters/main-exception.filter';
+import { StorageModule } from './storage/storage.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
     imports: [
@@ -25,6 +27,8 @@ import { MainExceptionFilter } from './app-exception-filters/main-exception.filt
             inject: [ConfigService],
         }),
         TypeOrmModule.forFeature([]),
+        StorageModule,
+        MulterModule.register(),
     ],
     controllers: [],
     providers: [
