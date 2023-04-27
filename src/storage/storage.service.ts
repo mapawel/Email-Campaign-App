@@ -39,8 +39,12 @@ export class StorageService {
 
         const writeableStream = createWriteStream(filePath);
 
-        writeableStream.write(file.buffer);
-        writeableStream.end();
+        await new Promise((resolve, reject) => {
+            writeableStream.on('finish', resolve);
+            writeableStream.on('error', reject);
+            writeableStream.write(file.buffer);
+            writeableStream.end();
+        });
 
         return fileId;
     };
