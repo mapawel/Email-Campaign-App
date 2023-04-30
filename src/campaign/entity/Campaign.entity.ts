@@ -76,10 +76,4 @@ export class Campaign {
 
     @Column({ nullable: true })
     executedBy: string; // user id from Auth0
-
-    @Column({ nullable: true })
-    errorAt: Date;
-
-    @Column({ nullable: true })
-    errorReason: string;
 }
