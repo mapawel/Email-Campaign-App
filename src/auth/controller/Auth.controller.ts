@@ -14,8 +14,16 @@ export class AuthController {
     }
 
     @Get(Routes.AUTH_CALLBACK_ROUTE)
-    public async getToken(@Query('code') code: string): Promise<string> {
-        await this.authService.getToken(code);
-        return 'OK!!!!!';
+    public async getToken(
+        @Query('code') code: string,
+        @Res() res: Response,
+    ): Promise<void> {
+        const token: string = await this.authService.getToken(code);
+        return res
+            .cookie('token', token, {
+                httpOnly: true,
+                secure: true,
+            })
+            .redirect(Routes.BASE_ROUTE);
     }
 }
