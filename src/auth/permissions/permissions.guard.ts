@@ -1,6 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
+import { PERMISSIONS_KEY } from './permissions.settings';
+import { PermissionsEnum } from './permissions.enum';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
@@ -9,22 +11,22 @@ export class PermissionsGuard implements CanActivate {
     canActivate(
         context: ExecutionContext,
     ): boolean | Promise<boolean> | Observable<boolean> {
-        const routePermissions = this.reflector.get<string[]>(
-            'permissions',
+        const requiredPermissions = this.reflector.get<PermissionsEnum[]>(
+            PERMISSIONS_KEY,
             context.getHandler(),
         );
 
         const userPermissions = context.getArgs()[0].user.permissions;
 
-        if (!routePermissions) {
+        if (!requiredPermissions) {
             return true;
         }
 
-        const hasPermission = () =>
-            routePermissions.every((routePermission) =>
+        const hasAllRequiredPermissions = () =>
+            requiredPermissions.every((routePermission) =>
                 userPermissions.includes(routePermission),
             );
 
-        return hasPermission();
+        return hasAllRequiredPermissions();
     }
 }

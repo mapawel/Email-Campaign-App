@@ -1,6 +1,6 @@
 export class AuthException extends Error {
-    constructor(message: string, options?: any) {
+    constructor(readonly message: string, readonly options?: any) {
         super(message, options);
     }
-    name = 'AuthException';
+    readonly name = 'AuthException';
 }

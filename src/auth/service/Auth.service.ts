@@ -1,41 +1,47 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import axios, { AxiosResponse } from 'axios';
 import { Routes } from 'src/routes/Routes.enum';
 import { AuthException } from '../exceptions/auth.exception';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        @Inject('BASE_URL')
-        private readonly BASE_URL: string,
+    private readonly BASE_URL: string;
+    private readonly AUTH0_BASE_URL: string;
+    private readonly AUTH0_CLIENT_ID: string;
+    private readonly AUTH0_CLIENT_SECRET: string;
+    private readonly AUTH0_AUTHORIZE_ROUTE: string;
+    private readonly AUTH0_GET_TOKEN_ROUTE: string;
+    private readonly AUTH0_AUTH_API_AUDIENCE: string;
+    private readonly AUTH0_SCOPE: string;
 
-        @Inject('AUTH0_BASE_URL')
-        private readonly AUTH0_BASE_URL: string,
-
-        @Inject('AUTH0_CLIENT_ID')
-        private readonly AUTH0_CLIENT_ID: string,
-
-        @Inject('AUTH0_CLIENT_SECRET')
-        private readonly AUTH0_CLIENT_SECRET: string,
-
-        @Inject('AUTH0_AUTHORIZE_ROUTE')
-        private readonly AUTH0_AUTHORIZE_ROUTE: string,
-
-        @Inject('AUTH0_GET_TOKEN_ROUTE')
-        private readonly AUTH0_GET_TOKEN_ROUTE: string,
-
-        @Inject('AUTH0_AUTH_API_AUDIENCE')
-        private readonly AUTH0_AUTH_API_AUDIENCE: string,
-    ) {
-        this.validateIfExisting([
-            this.BASE_URL,
-            this.AUTH0_BASE_URL,
-            this.AUTH0_CLIENT_ID,
-            this.AUTH0_CLIENT_SECRET,
-            this.AUTH0_AUTHORIZE_ROUTE,
-            this.AUTH0_GET_TOKEN_ROUTE,
-            this.AUTH0_AUTH_API_AUDIENCE,
-        ]);
+    constructor(private readonly configService: ConfigService) {
+        this.BASE_URL = this.configService.get<string>('BASE_URL', '');
+        this.AUTH0_BASE_URL = this.configService.get<string>(
+            'AUTH0_BASE_URL',
+            '',
+        );
+        this.AUTH0_CLIENT_ID = this.configService.get<string>(
+            'AUTH0_CLIENT_ID',
+            '',
+        );
+        this.AUTH0_CLIENT_SECRET = this.configService.get<string>(
+            'AUTH0_CLIENT_SECRET',
+            '',
+        );
+        this.AUTH0_AUTHORIZE_ROUTE = this.configService.get<string>(
+            'AUTH0_AUTHORIZE_ROUTE',
+            '',
+        );
+        this.AUTH0_GET_TOKEN_ROUTE = this.configService.get<string>(
+            'AUTH0_GET_TOKEN_ROUTE',
+            '',
+        );
+        this.AUTH0_AUTH_API_AUDIENCE = this.configService.get<string>(
+            'AUTH0_AUTH_API_AUDIENCE',
+            '',
+        );
+        this.AUTH0_SCOPE = this.configService.get<string>('AUTH0_SCOPE', '');
     }
 
     // TO REMOVE AFTER DEVELOPMENT AND IF TOKEN FLOW IMPLEMENTED IN FRONT
@@ -45,7 +51,7 @@ export class AuthService {
             response_type: 'code',
             client_id: this.AUTH0_CLIENT_ID,
             redirect_uri: `${this.BASE_URL}${Routes.AUTH_ROUTE}${Routes.AUTH_CALLBACK_ROUTE}`,
-            scope: 'offline_access openid profile email',
+            scope: this.AUTH0_SCOPE,
         });
         return `${this.AUTH0_BASE_URL}${this.AUTH0_AUTHORIZE_ROUTE}?${queryParams}`;
     }
@@ -77,7 +83,7 @@ export class AuthService {
         }
     }
 
-    // TO REMOVE IF TOKEN FLOW IMPLEMENTED IN FRONT
+    // TO REMOVE IF TOKEN FLOW IMPLEMENTED IN FRONT, AT THIS MOMENT NOT USED
     // public async refreshToken(refreshToken: string): Promise<void> {
     //     try {
     //         const response: AxiosResponse = await axios({
@@ -100,12 +106,4 @@ export class AuthService {
     //         });
     //     }
     // }
-
-    private validateIfExisting(args: string[]): void {
-        args.forEach((arg: string) => {
-            if (!arg) {
-                throw new AuthException('Missing required env.auth field');
-            }
-        });
-    }
 }
