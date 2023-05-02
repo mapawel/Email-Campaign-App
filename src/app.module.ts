@@ -2,7 +2,7 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_FILTER } from '@nestjs/core';
-import { MainExceptionFilter } from './app-exception-filters/main-exception.filter';
+import { MainExceptionFilter } from './exceptionFilters/mainException.filter';
 import { AuthModule } from './auth/Auth.module';
 import { AuthTestModule } from './auth-test/auth-test.module';
 
