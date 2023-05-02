@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { Routes } from 'src/routes/Routes.enum';
 import axios, { AxiosResponse } from 'axios';
+import { Routes } from 'src/routes/Routes.enum';
+import { AuthException } from '../exceptions/auth.exception';
 
 @Injectable()
 export class AuthService {
@@ -49,44 +50,56 @@ export class AuthService {
     }
 
     public async getToken(code: string): Promise<string> {
-        const response: AxiosResponse = await axios({
-            method: 'POST',
-            url: `${this.AUTH0_BASE_URL}${this.AUTH0_GET_TOKEN_ROUTE}`,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            data: {
-                grant_type: 'authorization_code',
-                client_id: this.AUTH0_CLIENT_ID,
-                client_secret: this.AUTH0_CLIENT_SECRET,
-                code,
-                redirect_uri: `${this.BASE_URL}${Routes.AUTH_ROUTE}${Routes.AUTH_CALLBACK_ROUTE}`,
-            },
-        });
-        return response.data.access_token;
+        try {
+            const response: AxiosResponse = await axios({
+                method: 'POST',
+                url: `${this.AUTH0_BASE_URL}${this.AUTH0_GET_TOKEN_ROUTE}`,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                data: {
+                    grant_type: 'authorization_code',
+                    client_id: this.AUTH0_CLIENT_ID,
+                    client_secret: this.AUTH0_CLIENT_SECRET,
+                    code,
+                    redirect_uri: `${this.BASE_URL}${Routes.AUTH_ROUTE}${Routes.AUTH_CALLBACK_ROUTE}`,
+                },
+            });
+            return response.data.access_token;
+        } catch (err: any) {
+            throw new AuthException('Error while getting an auth token', {
+                cause: err,
+            });
+        }
     }
 
     public async refreshToken(refreshToken: string): Promise<void> {
-        const response: AxiosResponse = await axios({
-            method: 'POST',
-            url: `${this.AUTH0_BASE_URL}${this.AUTH0_GET_TOKEN_ROUTE}`,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            data: {
-                grant_type: 'refresh_token',
-                client_id: this.AUTH0_CLIENT_ID,
-                client_secret: this.AUTH0_CLIENT_SECRET,
-                refresh_token: refreshToken,
-            },
-        });
-        console.log('data ----> ', response.data); // to implement
+        try {
+            const response: AxiosResponse = await axios({
+                method: 'POST',
+                url: `${this.AUTH0_BASE_URL}${this.AUTH0_GET_TOKEN_ROUTE}`,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                data: {
+                    grant_type: 'refresh_token',
+                    client_id: this.AUTH0_CLIENT_ID,
+                    client_secret: this.AUTH0_CLIENT_SECRET,
+                    refresh_token: refreshToken,
+                },
+            });
+            console.log('data ----> ', response.data); // to implement
+        } catch (err: any) {
+            throw new AuthException('Error while refreshing an auth token', {
+                cause: err,
+            });
+        }
     }
 
     private validateIfExisting(args: string[]): void {
         args.forEach((arg: string) => {
             if (!arg) {
-                throw new Error('Missing required env.auth field');
+                throw new AuthException('Missing required env.auth field');
             }
         });
     }

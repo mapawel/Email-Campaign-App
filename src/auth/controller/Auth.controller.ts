@@ -14,16 +14,11 @@ export class AuthController {
     }
 
     @Get(Routes.AUTH_CALLBACK_ROUTE)
-    public async getToken(
-        @Query('code') code: string,
-        @Res() res: Response,
-    ): Promise<void> {
+    public async getToken(@Query('code') code: string) {
         const token: string = await this.authService.getToken(code);
-        return res
-            .cookie('token', token, {
-                httpOnly: true,
-                secure: true,
-            })
-            .redirect(Routes.BASE_ROUTE);
+        return {
+            message: 'User logged in',
+            token,
+        };
     }
 }

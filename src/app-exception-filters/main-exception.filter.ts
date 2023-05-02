@@ -20,7 +20,7 @@ export class MainExceptionFilter implements ExceptionFilter {
         const status =
             exception instanceof HttpException ? exception.getStatus() : 500;
 
-        this.logger.error(exception.stack);
+        this.logger.error(this.buildFullExceptionMessage(exception));
 
         response.status(status).json({
             message:
@@ -28,5 +28,13 @@ export class MainExceptionFilter implements ExceptionFilter {
                     ? 'Ups... Something went wrong. Try again later.'
                     : exception.message,
         });
+    }
+
+    private buildFullExceptionMessage(exception: Error): string {
+        return `
+        EXCEPTION: ${exception},
+        STACK: ${exception.stack}
+        CAUSE?: ${JSON.stringify(exception.cause, null, 2)}
+        `;
     }
 }
