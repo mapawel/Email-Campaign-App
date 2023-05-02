@@ -38,17 +38,19 @@ export class AuthService {
         ]);
     }
 
+    // TO REMOVE AFTER DEVELOPMENT AND IF TOKEN FLOW IMPLEMENTED IN FRONT
     public getAuthUrl(): string {
         const queryParams: URLSearchParams = new URLSearchParams({
             audience: this.AUTH0_AUTH_API_AUDIENCE,
             response_type: 'code',
             client_id: this.AUTH0_CLIENT_ID,
             redirect_uri: `${this.BASE_URL}${Routes.AUTH_ROUTE}${Routes.AUTH_CALLBACK_ROUTE}`,
-            scope: 'offline_access',
+            scope: 'offline_access openid profile email',
         });
         return `${this.AUTH0_BASE_URL}${this.AUTH0_AUTHORIZE_ROUTE}?${queryParams}`;
     }
 
+    // TO REMOVE AFTER DEVELOPMENT AND IF TOKEN FLOW IMPLEMENTED IN FRONT
     public async getToken(code: string): Promise<string> {
         try {
             const response: AxiosResponse = await axios({
@@ -65,6 +67,8 @@ export class AuthService {
                     redirect_uri: `${this.BASE_URL}${Routes.AUTH_ROUTE}${Routes.AUTH_CALLBACK_ROUTE}`,
                 },
             });
+            console.log('response.data ----> ', response.data);
+
             return response.data.access_token;
         } catch (err: any) {
             throw new AuthException('Error while getting an auth token', {
@@ -73,28 +77,29 @@ export class AuthService {
         }
     }
 
-    public async refreshToken(refreshToken: string): Promise<void> {
-        try {
-            const response: AxiosResponse = await axios({
-                method: 'POST',
-                url: `${this.AUTH0_BASE_URL}${this.AUTH0_GET_TOKEN_ROUTE}`,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                data: {
-                    grant_type: 'refresh_token',
-                    client_id: this.AUTH0_CLIENT_ID,
-                    client_secret: this.AUTH0_CLIENT_SECRET,
-                    refresh_token: refreshToken,
-                },
-            });
-            console.log('data ----> ', response.data); // to implement
-        } catch (err: any) {
-            throw new AuthException('Error while refreshing an auth token', {
-                cause: err,
-            });
-        }
-    }
+    // TO REMOVE IF TOKEN FLOW IMPLEMENTED IN FRONT
+    // public async refreshToken(refreshToken: string): Promise<void> {
+    //     try {
+    //         const response: AxiosResponse = await axios({
+    //             method: 'POST',
+    //             url: `${this.AUTH0_BASE_URL}${this.AUTH0_GET_TOKEN_ROUTE}`,
+    //             headers: {
+    //                 'Content-Type': 'application/x-www-form-urlencoded',
+    //             },
+    //             data: {
+    //                 grant_type: 'refresh_token',
+    //                 client_id: this.AUTH0_CLIENT_ID,
+    //                 client_secret: this.AUTH0_CLIENT_SECRET,
+    //                 refresh_token: refreshToken,
+    //             },
+    //         });
+    //         console.log('data ----> ', response.data);
+    //     } catch (err: any) {
+    //         throw new AuthException('Error while refreshing an auth token', {
+    //             cause: err,
+    //         });
+    //     }
+    // }
 
     private validateIfExisting(args: string[]): void {
         args.forEach((arg: string) => {

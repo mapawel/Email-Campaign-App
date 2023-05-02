@@ -3,6 +3,7 @@ import { AuthService } from '../service/Auth.service';
 import { Routes } from 'src/routes/Routes.enum';
 import { Response } from 'express';
 
+// TO REMOVE AFTER DEVELOPMENT AND IF TOKEN FLOW IMPLEMENTED IN FRONT
 @Controller(Routes.AUTH_ROUTE)
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
