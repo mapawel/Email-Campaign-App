@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_FILTER } from '@nestjs/core';
-import { MainExceptionFilter } from './exceptionFilters/mainException.filter';
 import { AuthModule } from './auth/Auth.module';
 import { AuthTestModule } from './auth-test/auth-test.module';
+import { MainExceptionFilter } from './exceptionFilters/mainException.filter';
 import { Campaign } from './campaign/entity/Campaign.entity';
 import { Template } from './template/entity/Template.entity';
 import { EmailProvider } from './email-provider/entity/Email-provider.entity';
+
 
 @Module({
     imports: [
@@ -30,7 +31,6 @@ import { EmailProvider } from './email-provider/entity/Email-provider.entity';
             }),
             inject: [ConfigService],
         }),
-        TypeOrmModule.forFeature([]),
         AuthModule,
         AuthTestModule,
         TypeOrmModule.forFeature([Template, Campaign, EmailProvider]),
