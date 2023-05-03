@@ -1,4 +1,4 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import axios from 'axios';
 import MockAdapter = require('axios-mock-adapter');
 import { ConfigModule } from '@nestjs/config';
@@ -8,12 +8,12 @@ import { AuthException } from 'src/auth/exceptions/auth.exception';
 
 describe('authService', () => {
     let authService: AuthService;
-    let mock: any;
+    let mock: MockAdapter;
 
     beforeEach(async () => {
         mock = new MockAdapter(axios);
 
-        const moduleRef = await Test.createTestingModule({
+        const moduleRef: TestingModule = await Test.createTestingModule({
             imports: [
                 ConfigModule.forRoot({
                     isGlobal: true,
@@ -37,7 +37,7 @@ describe('authService', () => {
     describe('getAuthUrl', () => {
         it('should return url containing all necessary query string keys', () => {
             // given
-            const requiredStringsInUrl = [
+            const requiredStringsInUrl: string[] = [
                 'audience=',
                 'response_type=',
                 'client_id=',
@@ -46,7 +46,7 @@ describe('authService', () => {
             ];
 
             //when
-            const returnedUrl = authService.getAuthUrl();
+            const returnedUrl: string = authService.getAuthUrl();
 
             //then
             requiredStringsInUrl.map((requiredString) => {
@@ -56,7 +56,7 @@ describe('authService', () => {
 
         it('should return url containing all necessary query strings values', () => {
             // given
-            const requiredStringsInUrl = [
+            const requiredStringsInUrl: (string | undefined)[] = [
                 encodeURIComponent(process.env.AUTH0_AUTH_API_AUDIENCE || ''),
                 'code',
                 encodeURIComponent(process.env.AUTH0_CLIENT_ID || ''),
@@ -67,7 +67,7 @@ describe('authService', () => {
             ];
 
             //when
-            const returnedUrl = authService.getAuthUrl();
+            const returnedUrl: string = authService.getAuthUrl();
 
             //then
             requiredStringsInUrl.map((requiredString) => {
@@ -77,10 +77,10 @@ describe('authService', () => {
 
         it('should return url starting from given url', () => {
             // given
-            const url = `${process.env.AUTH0_BASE_URL}${process.env.AUTH0_AUTHORIZE_ROUTE}?`;
+            const url: string = `${process.env.AUTH0_BASE_URL}${process.env.AUTH0_AUTHORIZE_ROUTE}?`;
 
             //when
-            const returnedUrl = authService.getAuthUrl();
+            const returnedUrl: string = authService.getAuthUrl();
             //then
             expect(returnedUrl).toContain(url);
         });
@@ -102,7 +102,7 @@ describe('authService', () => {
             });
 
             //when
-            const returnedToken = await authService.getToken(code);
+            const returnedToken: string = await authService.getToken(code);
 
             //then
             expect(returnedToken).toEqual('access_token');

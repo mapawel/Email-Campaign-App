@@ -73,7 +73,6 @@ export class AuthService {
                     redirect_uri: `${this.BASE_URL}${Routes.AUTH_ROUTE}${Routes.AUTH_CALLBACK_ROUTE}`,
                 },
             });
-            console.log('response.data ----> ', response.data);
 
             return response.data.access_token;
         } catch (err: any) {
