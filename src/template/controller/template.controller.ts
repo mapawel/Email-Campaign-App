@@ -7,13 +7,14 @@ import {
     Body,
     Param,
 } from '@nestjs/common';
+import { Routes } from 'src/routes/Routes.enum';
 import { TemplateService } from '../services/template.service';
 import { TemplateUpdateDTO } from '../dto/templateUpdate.dto';
 import { TemplateCreateDTO } from '../dto/templateCreate.dto';
 
-@Controller('template')
+@Controller(Routes.TEMPLATE_ROUTE)
 export class TemplateController {
-    private readonly templateService: TemplateService;
+    constructor(private readonly templateService: TemplateService) {}
 
     @Get()
     async getTemplates() {
@@ -21,7 +22,7 @@ export class TemplateController {
     }
 
     @Get(':id')
-    async getTemplateById(@Param('id') templateId: string) {
+    async getTemplateById(@Param('id') templateId: number) {
         return await this.templateService.getTemplateById(templateId);
     }
 
@@ -32,7 +33,7 @@ export class TemplateController {
 
     @Patch(':id')
     async updateTemplate(
-        @Param('id') templateId: string,
+        @Param('id') templateId: number,
         @Body() templateUpdateDTO: TemplateUpdateDTO,
     ) {
         return await this.templateService.updateTemplate(
