@@ -3,8 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_FILTER } from '@nestjs/core';
 import { MainExceptionFilter } from './app-exception-filters/main-exception.filter';
-import { StorageModule } from './storage/storage.module';
-import { MulterModule } from '@nestjs/platform-express';
+
+import { Campaign } from './campaign/entity/Campaign.entity';
+import { Template } from './template/entity/Template.entity';
+import { EmailProvider } from './email-provider/entity/Email-provider.entity';
+
 
 @Module({
     imports: [
@@ -23,12 +26,13 @@ import { MulterModule } from '@nestjs/platform-express';
                 database: configService.get('POSTGRES_DB'),
                 entities: [__dirname + '/**/*.entity{.ts,.js}'],
                 synchronize: true,
+                logNotifications: true,
             }),
             inject: [ConfigService],
         }),
-        TypeOrmModule.forFeature([]),
-        StorageModule,
-        MulterModule.register(),
+
+        TypeOrmModule.forFeature([Template, Campaign, EmailProvider]),
+
     ],
     controllers: [],
     providers: [
