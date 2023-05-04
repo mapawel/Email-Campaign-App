@@ -11,23 +11,28 @@ import { Routes } from 'src/routes/Routes.enum';
 import { TemplateService } from '../services/template.service';
 import { TemplateUpdateDTO } from '../dto/templateUpdate.dto';
 import { TemplateCreateDTO } from '../dto/templateCreate.dto';
+import { TemplateResDTO } from '../dto/templateRes.dto';
 
 @Controller(Routes.TEMPLATE_ROUTE)
 export class TemplateController {
     constructor(private readonly templateService: TemplateService) {}
 
     @Get()
-    async getTemplates() {
+    async getTemplates(): Promise<TemplateResDTO[]> {
         return await this.templateService.getAllTemplates();
     }
 
     @Get(':id')
-    async getTemplateById(@Param('id') templateId: number) {
+    async getTemplateById(
+        @Param('id') templateId: number,
+    ): Promise<TemplateResDTO> {
         return await this.templateService.getTemplateById(templateId);
     }
 
     @Post()
-    async createTemplate(@Body() templateCreateDTO: TemplateCreateDTO) {
+    async createTemplate(
+        @Body() templateCreateDTO: TemplateCreateDTO,
+    ): Promise<TemplateResDTO> {
         return await this.templateService.createTemplate(templateCreateDTO);
     }
 
@@ -35,7 +40,7 @@ export class TemplateController {
     async updateTemplate(
         @Param('id') templateId: number,
         @Body() templateUpdateDTO: TemplateUpdateDTO,
-    ) {
+    ): Promise<TemplateResDTO> {
         return await this.templateService.updateTemplate(
             templateId,
             templateUpdateDTO,
@@ -43,7 +48,7 @@ export class TemplateController {
     }
 
     @Delete(':id')
-    async deleteTemplate(@Param('id') templateId: string) {
+    async deleteTemplate(@Param('id') templateId: string): Promise<true> {
         return await this.templateService.deleteTemplate(templateId);
     }
 }

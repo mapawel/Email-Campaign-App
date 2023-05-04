@@ -43,10 +43,10 @@ export class MainExceptionFilter implements ExceptionFilter {
         return `
         EXCEPTION: ${exception},
         STACK: ${exception.stack}
-        CAUSE?: ${JSON.stringify(exception.cause, null, 2)}
+        CAUSE?: ${exception.cause}
         ${
             errorResponse &&
-            `ERROR-RESPOMSE: ${JSON.stringify(errorResponse, null, 2)}`
+            `ERROR-RESPONSE: ${JSON.stringify(errorResponse, null, 2)}`
         }
         `;
     }
