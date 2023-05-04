@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { log } from 'console';
 import {
     createReadStream,
     createWriteStream,
@@ -7,50 +8,45 @@ import {
     write,
 } from 'fs';
 import { join } from 'path';
-import { Stream } from 'stream';
-import { promisify } from 'util';
 import { v4 as uuid } from 'uuid';
-
-const pipeline = promisify(Stream.pipeline);
 
 @Injectable()
 export class StorageService {
-    private readonly storage: string | undefined;
-    private readonly html = 'html';
-    private readonly xml = 'xml';
+    private readonly storage: string;
+    private readonly HTML_EXTENSION = 'html';
+    private readonly XML_EXTENSION = 'xml';
 
-    constructor(private readonly configService: ConfigService) {
-        this.storage = this.configService.get<string>('STORAGE');
-        if (!this.storage) {
-            throw new Error('Something wrong with env or config service');
-        }
+    constructor(private readonly configService: ConfigService<string, true>) {
+        this.storage = this.configService.get<string>('STORAGE', {
+            infer: true,
+        });
     }
 
     saveFile = async (file: Express.Multer.File): Promise<string> => {
         const fileId: string = uuid();
-        const fileExtension: string = file.mimetype.includes(this.html)
-            ? this.html
-            : this.xml;
+        const fileExtension: string = file.mimetype.includes(
+            this.HTML_EXTENSION,
+        )
+            ? this.HTML_EXTENSION
+            : this.XML_EXTENSION;
 
         const filePath = join(
             process.cwd(),
-            `${this.storage}/${fileId}.${fileExtension}`,
+            this.storage,
+            `${fileId}.${fileExtension}`,
         );
 
         const writeableStream = createWriteStream(filePath);
 
-        await new Promise((resolve, reject) => {
-            writeableStream.on('finish', resolve);
-            writeableStream.on('error', reject);
-            writeableStream.write(file.buffer);
-            writeableStream.end();
-        });
+        writeableStream.write(file.buffer);
+        writeableStream.end();
 
         return fileId;
     };
 
     readFile = async (name: string): Promise<string> => {
-        const dir: string = join(process.cwd(), `${this.storage}`);
+        const dir: string = join(process.cwd(), this.storage);
+
         const files = await fsPromises.readdir(dir);
 
         const foundFile = files.find((file) => file.includes(name));
