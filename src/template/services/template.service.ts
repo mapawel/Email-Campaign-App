@@ -52,7 +52,7 @@ export class TemplateService {
         templateCreateDTO: TemplateCreateDTO,
     ): Promise<TemplateResDTO> {
         try {
-            const newTemplate: Template = await this.templateRepository.create(
+            const newTemplate: Template = this.templateRepository.create(
                 templateCreateDTO,
             );
             const savedTemplate: Template = await this.templateRepository.save(
@@ -83,7 +83,7 @@ export class TemplateService {
             );
             if (!result.affected)
                 throw new NotFoundException(
-                    'Cannot delete template! Resource not found.',
+                    'Cannot update template! Resource not found.',
                 );
 
             const updatedTemplate: TemplateResDTO = await this.getTemplateById(
@@ -102,7 +102,7 @@ export class TemplateService {
         }
     }
 
-    public async deleteTemplate(templateId: string): Promise<true> {
+    public async deleteTemplate(templateId: number): Promise<true> {
         try {
             const result: DeleteResult = await this.templateRepository.delete(
                 templateId,

@@ -48,7 +48,7 @@ export class TemplateController {
     }
 
     @Delete(':id')
-    async deleteTemplate(@Param('id') templateId: string): Promise<true> {
+    async deleteTemplate(@Param('id') templateId: number): Promise<true> {
         return await this.templateService.deleteTemplate(templateId);
     }
 }
