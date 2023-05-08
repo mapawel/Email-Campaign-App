@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios, { AxiosResponse } from 'axios';
-import { Routes } from 'src/routes/Routes.enum';
+import { Routes } from '../../routes/Routes.enum';
 import { AuthException } from '../exceptions/auth.exception';
 
 @Injectable()
