@@ -18,7 +18,10 @@ export class AuthTestController {
     }
 
     @UseGuards(AuthGuard('jwt'), PermissionsGuard)
-    @Permissions([PermissionsEnum.read_templates, PermissionsEnum.execute_campaigns])
+    @Permissions([
+        PermissionsEnum.read_templates,
+        PermissionsEnum.execute_campaigns,
+    ])
     @Get('/2')
     getTestElement(): string[] {
         return this.authTestService.getTestElements();

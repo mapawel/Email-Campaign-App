@@ -7,7 +7,6 @@ import { AuthTestModule } from './auth-test/auth-test.module';
 import { MainExceptionFilter } from './exceptionFilters/mainException.filter';
 import { TemplateModule } from './template/template.module';
 
-
 @Module({
     imports: [
         ConfigModule.forRoot({

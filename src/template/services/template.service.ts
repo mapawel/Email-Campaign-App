@@ -52,9 +52,8 @@ export class TemplateService {
         templateCreateDTO: TemplateCreateDTO,
     ): Promise<TemplateResDTO> {
         try {
-            const newTemplate: Template = this.templateRepository.create(
-                templateCreateDTO,
-            );
+            const newTemplate: Template =
+                this.templateRepository.create(templateCreateDTO);
             const savedTemplate: Template = await this.templateRepository.save(
                 newTemplate,
             );
