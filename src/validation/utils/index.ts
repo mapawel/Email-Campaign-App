@@ -1,8 +1,8 @@
 type validatorParamsType = 'minLength' | 'maxLength';
 
-type validatorsObjectType<A extends string | number | symbol> = Record<
-    'template',
-    Record<A, Record<string, number>>
+type validatorsObjectType = Record<
+    'template' | 'campaign',
+    Record<any, Record<string, number>>
 >;
 
 export function buildValidatorKeyParamsGetter<validatingEntity>({
@@ -10,7 +10,7 @@ export function buildValidatorKeyParamsGetter<validatingEntity>({
     validatorsObject,
 }: {
     entityName: keyof typeof validatorsObject;
-    validatorsObject: validatorsObjectType<keyof validatingEntity>;
+    validatorsObject: validatorsObjectType;
 }): (key: keyof validatingEntity, param: validatorParamsType) => number | null {
     return (
         key: keyof validatingEntity,
