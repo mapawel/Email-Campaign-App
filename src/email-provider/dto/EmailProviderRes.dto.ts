@@ -1,4 +1,4 @@
-import { CampaignResDTO } from "../../campaign/dto/campaignRes.dto";
+import { CampaignResDTO } from '../../campaign/dto/campaignRes.dto';
 
 export class EmailProviderResDTO {
     id: number;
