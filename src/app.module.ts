@@ -3,9 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_FILTER } from '@nestjs/core';
 import { MainExceptionFilter } from './app-exception-filters/main-exception.filter';
+
 import { Campaign } from './campaign/entity/Campaign.entity';
 import { Template } from './template/entity/Template.entity';
 import { EmailProvider } from './email-provider/entity/Email-provider.entity';
+
 
 @Module({
     imports: [
@@ -28,7 +30,9 @@ import { EmailProvider } from './email-provider/entity/Email-provider.entity';
             }),
             inject: [ConfigService],
         }),
+
         TypeOrmModule.forFeature([Template, Campaign, EmailProvider]),
+
     ],
     controllers: [],
     providers: [
