@@ -1,6 +1,6 @@
 import { Controller, Get, Query, Res } from '@nestjs/common';
 import { AuthService } from '../service/Auth.service';
-import { Routes } from 'src/routes/Routes.enum';
+import { Routes } from '../../routes/Routes.enum';
 import { Response } from 'express';
 
 // TO REMOVE AFTER DEVELOPMENT AND IF TOKEN FLOW IMPLEMENTED IN FRONT

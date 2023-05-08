@@ -3,8 +3,8 @@ import axios from 'axios';
 import MockAdapter = require('axios-mock-adapter');
 import { ConfigModule } from '@nestjs/config';
 import { AuthService } from '../Auth.service';
-import { Routes } from 'src/routes/Routes.enum';
-import { AuthException } from 'src/auth/exceptions/auth.exception';
+import { Routes } from '../../../routes/Routes.enum';
+import { AuthException } from '../../../auth/exceptions/auth.exception';
 
 describe('authService', () => {
     let authService: AuthService;

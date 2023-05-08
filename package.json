@@ -21,6 +21,7 @@
         "prepare": "husky install"
     },
     "dependencies": {
+        "@commitlint/config-conventional": "^17.6.3",
         "@nestjs/common": "^9.0.0",
         "@nestjs/config": "^2.3.1",
         "@nestjs/core": "^9.0.0",
