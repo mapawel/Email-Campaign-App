@@ -1,4 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException, Scope } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Template } from '../entity/Template.entity';
@@ -8,15 +10,17 @@ import { TemplateUpdateDTO } from '../dto/templateUpdate.dto';
 import { templateResDtoMapper } from '../dto/templateResDto.mapper';
 import { TemplateRepoException } from '../exceptions/templateRepo.exception';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class TemplateService {
     constructor(
         @InjectRepository(Template)
         private readonly templateRepository: Repository<Template>,
+        @Inject(REQUEST) private readonly request: Request & { user: any },
     ) {}
 
     public async getAllTemplates(): Promise<TemplateResDTO[]> {
         try {
+            console.log('request.user ----> ', this.request.user);
             const allTemplates: Template[] =
                 await this.templateRepository.find();
             return allTemplates.map((template: Template) =>

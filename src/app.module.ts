@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_FILTER } from '@nestjs/core';
 import { AuthModule } from './auth/Auth.module';
-import { AuthTestModule } from './auth-test/auth-test.module';
 import { MainExceptionFilter } from './exceptionFilters/mainException.filter';
 import { TemplateModule } from './template/template.module';
 
@@ -29,7 +28,6 @@ import { TemplateModule } from './template/template.module';
             inject: [ConfigService],
         }),
         AuthModule,
-        AuthTestModule,
         TemplateModule,
     ],
     controllers: [],
