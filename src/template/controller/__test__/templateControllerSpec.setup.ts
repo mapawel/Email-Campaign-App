@@ -1,5 +1,6 @@
 import { TemplateCreateDTO } from 'src/template/dto/templateCreate.dto';
 import { TemplateResDTO } from 'src/template/dto/templateRes.dto';
+import { TemplateUpdateDTO } from 'src/template/dto/templateUpdate.dto';
 
 export class TemplateControllerSpecSetup {
     public exampleMockCreateTemplate: TemplateCreateDTO = {
@@ -7,6 +8,14 @@ export class TemplateControllerSpecSetup {
         description: 'test description',
         createdBy: 'idOfCreator',
         createdAt: new Date(Date.now()),
+        fileId: 'fileId',
+    };
+
+    public exampleMockUpdateTemplate: TemplateUpdateDTO = {
+        name: 'test name',
+        description: 'test description',
+        updatedBy: 'idOfCreator',
+        updatedAt: new Date(Date.now()),
         fileId: 'fileId',
     };
 

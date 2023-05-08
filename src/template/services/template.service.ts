@@ -20,7 +20,7 @@ export class TemplateService {
 
     public async getAllTemplates(): Promise<TemplateResDTO[]> {
         try {
-            console.log('request.user ----> ', this.request.user);
+            // console.log('request.user ----> ', this.request.user);
             const allTemplates: Template[] =
                 await this.templateRepository.find();
             return allTemplates.map((template: Template) =>

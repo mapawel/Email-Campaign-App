@@ -10,8 +10,8 @@ describe('permissions', () => {
         it('should return permissions set to example method', () => {
             //given
             const permissions = [
-                PermissionsEnum.approve_templates,
-                PermissionsEnum.create_templates,
+                PermissionsEnum.APPROVE_TEMPLATES,
+                PermissionsEnum.CREATE_TEMPLATES,
             ];
 
             //when
@@ -33,7 +33,7 @@ describe('permissions', () => {
     describe('permissionsGuard', () => {
         it('should return true caused a match required permission to permission claimed', () => {
             //given
-            const permissions = [PermissionsEnum.approve_templates];
+            const permissions = [PermissionsEnum.APPROVE_TEMPLATES];
 
             const mockExecutionContext: Partial<
                 Record<
@@ -79,7 +79,7 @@ describe('permissions', () => {
 
         it('should return true caused by not required permissions', () => {
             //given
-            const permissions = [PermissionsEnum.approve_templates];
+            const permissions = [PermissionsEnum.APPROVE_TEMPLATES];
 
             const mockExecutionContext: Partial<
                 Record<
@@ -125,7 +125,7 @@ describe('permissions', () => {
 
         it('should return false caused not permissions match', () => {
             //given
-            const permissions = [PermissionsEnum.create_campaigns];
+            const permissions = [PermissionsEnum.CREATE_CAMPAIGNS];
 
             const mockExecutionContext: Partial<
                 Record<
@@ -155,7 +155,7 @@ describe('permissions', () => {
             > = {
                 get: jest
                     .fn()
-                    .mockReturnValue([PermissionsEnum.approve_templates]), // not permission match
+                    .mockReturnValue([PermissionsEnum.APPROVE_TEMPLATES]), // not permission match
             };
 
             const mockContext = mockExecutionContext as ExecutionContext;

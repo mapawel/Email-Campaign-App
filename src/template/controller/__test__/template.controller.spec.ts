@@ -97,7 +97,7 @@ describe('TemplateController test suit:', () => {
             // when
             const result = await templateController.updateTemplate(
                 1,
-                setup.exampleMockCreateTemplate,
+                setup.exampleMockUpdateTemplate,
             );
 
             //then

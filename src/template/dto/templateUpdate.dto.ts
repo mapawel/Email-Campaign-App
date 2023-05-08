@@ -13,7 +13,7 @@ const getTemplateValidatorParam =
 export class TemplateUpdateDTO extends PartialType(TemplateCreateDTO) {
     @IsDateString()
     updatedAt: Date;
-    
+
     @IsString()
     @Length(
         getTemplateValidatorParam('updatedBy', 'minLength') || 4,

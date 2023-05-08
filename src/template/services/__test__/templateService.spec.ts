@@ -6,6 +6,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { TemplateServiceSpecSetup } from './templateServiceSpec.setup';
 import { TemplateCreateDTO } from 'src/template/dto/templateCreate.dto';
 import { TemplateResDTO } from 'src/template/dto/templateRes.dto';
+import { TemplateUpdateDTO } from 'src/template/dto/templateUpdate.dto';
 
 describe('TemplateService test suit', () => {
     let templateService: TemplateService;
@@ -27,7 +28,9 @@ describe('TemplateService test suit', () => {
             ],
         }).compile();
 
-        templateService = module.get<TemplateService>(TemplateService);
+        templateService = await module.resolve<TemplateService>(
+            TemplateService,
+        );
         templateRepository =
             module.get<Repository<Template>>(TEMPLATE_REPO_TOKEN);
     });
@@ -110,31 +113,24 @@ describe('TemplateService test suit', () => {
                 templateService,
                 'getTemplateById',
             );
-            const updatedExampleTempate: TemplateCreateDTO = {
-                ...setup.exampleMockTemplate,
-                name: 'updated name',
-            };
             // when
-            await templateService.updateTemplate(1, updatedExampleTempate);
+            await templateService.updateTemplate(
+                1,
+                setup.exampleMockUpdateTemplate,
+            );
 
             //then
             expect(repoUpdateMock).toBeCalledTimes(1);
             expect(serviceFindByIdSpy).toBeCalledTimes(1);
         });
 
-        it('should return updated temapte', async () => {
+        it('should return updated template', async () => {
             // given
-            const updatedExampleTempate: TemplateCreateDTO = {
-                ...setup.exampleMockTemplate,
-                name: 'updated name',
-            };
 
             const updatedResTempate: TemplateResDTO = {
+                ...(setup.exampleMockUpdateTemplate as TemplateResDTO),
                 id: 1,
-                updatedBy: 'updated by',
-                updatedAt: new Date(),
                 campaigns: [],
-                ...updatedExampleTempate,
             };
 
             jest.spyOn(
@@ -145,7 +141,7 @@ describe('TemplateService test suit', () => {
             // when
             const result: TemplateResDTO = await templateService.updateTemplate(
                 1,
-                updatedExampleTempate,
+                setup.exampleMockUpdateTemplate,
             );
 
             //then
