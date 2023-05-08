@@ -5,6 +5,7 @@ import {
     HttpException,
     Logger,
     LoggerService,
+    BadRequestException,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -22,7 +23,10 @@ export class MainExceptionFilter implements ExceptionFilter {
 
         this.logger.error(this.buildFullExceptionMessage(exception));
 
-        response.status(status).json({
+        if (exception instanceof BadRequestException)
+            return response.status(status).json(exception.getResponse());
+
+        return response.status(status).json({
             message:
                 status === 500
                     ? 'Ups... Something went wrong. Try again later.'
@@ -31,10 +35,19 @@ export class MainExceptionFilter implements ExceptionFilter {
     }
 
     private buildFullExceptionMessage(exception: Error): string {
+        const errorResponse =
+            exception instanceof BadRequestException
+                ? exception.getResponse()
+                : null;
+
         return `
         EXCEPTION: ${exception},
         STACK: ${exception.stack}
-        CAUSE?: ${JSON.stringify(exception.cause, null, 2)}
+        CAUSE?: ${exception.cause}
+        ${
+            errorResponse &&
+            `ERROR-RESPONSE: ${JSON.stringify(errorResponse, null, 2)}`
+        }
         `;
     }
 }

@@ -5,9 +5,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { AuthModule } from './auth/Auth.module';
 import { AuthTestModule } from './auth-test/auth-test.module';
 import { MainExceptionFilter } from './exceptionFilters/mainException.filter';
-import { Campaign } from './campaign/entity/Campaign.entity';
-import { Template } from './template/entity/Template.entity';
-import { EmailProvider } from './email-provider/entity/Email-provider.entity';
+import { TemplateModule } from './template/template.module';
 
 @Module({
     imports: [
@@ -32,7 +30,7 @@ import { EmailProvider } from './email-provider/entity/Email-provider.entity';
         }),
         AuthModule,
         AuthTestModule,
-        TypeOrmModule.forFeature([Template, Campaign, EmailProvider]),
+        TemplateModule,
     ],
     controllers: [],
     providers: [
