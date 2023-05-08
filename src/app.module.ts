@@ -5,6 +5,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { MainExceptionFilter } from './app-exception-filters/main-exception.filter';
 import { StorageModule } from './storage/storage.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { EmailProviderModule } from './email-provider/email-provider.module';
 
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { MulterModule } from '@nestjs/platform-express';
         TypeOrmModule.forFeature([]),
         StorageModule,
         MulterModule.register(),
+        EmailProviderModule,
     ],
     controllers: [],
     providers: [
