@@ -11,14 +11,13 @@ const getTemplateValidatorParam =
     });
 
 export class TemplateUpdateDTO extends PartialType(TemplateCreateDTO) {
-    @IsDateString()
-    updatedAt: Date;
-
-    @IsString()
-    @Length(
-        getTemplateValidatorParam('createdBy', 'minLength') || 4,
-        getTemplateValidatorParam('createdBy', 'maxLength') || 36,
-        // getTemplateValidatorParam('', 'maxLength') || 36,
-    )
-    updatedBy: string;
+    // @IsDateString()
+    // updatedAt: Date;
+    // @IsString()
+    // @Length(
+    //     getTemplateValidatorParam('createdBy', 'minLength') || 4,
+    //     getTemplateValidatorParam('createdBy', 'maxLength') || 36,
+    //     // getTemplateValidatorParam('', 'maxLength') || 36,
+    // )
+    // updatedBy: string;
 }
