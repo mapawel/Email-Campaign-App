@@ -1,6 +1,6 @@
-import { HttpService } from "@nestjs/axios";
-import { MailProvider } from "../types/email-provider.interface";
-import { mailgunConfig } from "./config/mailgun.config";
+import { HttpService } from '@nestjs/axios';
+import { MailProvider } from '../types/email-provider.interface';
+import { mailgunConfig } from './config/mailgun.config';
 
 export class MailgunProvider implements MailProvider {
     constructor(private httpService: HttpService) {}
