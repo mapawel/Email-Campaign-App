@@ -153,7 +153,9 @@ describe('permissions', () => {
                     jest.MockedFunction<any>
                 >
             > = {
-                get: jest.fn().mockReturnValue([PermissionsEnum.approve_templates]), // not permission match
+                get: jest
+                    .fn()
+                    .mockReturnValue([PermissionsEnum.approve_templates]), // not permission match
             };
 
             const mockContext = mockExecutionContext as ExecutionContext;

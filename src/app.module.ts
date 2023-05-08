@@ -9,7 +9,6 @@ import { Campaign } from './campaign/entity/Campaign.entity';
 import { Template } from './template/entity/Template.entity';
 import { EmailProvider } from './email-provider/entity/Email-provider.entity';
 
-
 @Module({
     imports: [
         ConfigModule.forRoot({

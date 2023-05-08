@@ -1,4 +1,5 @@
 services:
+
     api:
         build:
             dockerfile: Dockerfile
@@ -28,4 +29,4 @@ services:
             - postgres:/var/lib/postgresql/data
 
 volumes:
-    postgres:
+  postgres:

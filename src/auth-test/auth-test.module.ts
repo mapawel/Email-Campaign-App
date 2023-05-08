@@ -4,7 +4,7 @@ import { AuthTestService } from './auth-test.service';
 
 // TO REMOVE AFTER MANUAL TESTS
 @Module({
-  controllers: [AuthTestController],
-  providers: [AuthTestService]
+    controllers: [AuthTestController],
+    providers: [AuthTestService],
 })
 export class AuthTestModule {}
