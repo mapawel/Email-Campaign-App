@@ -25,16 +25,6 @@ export class TemplateCreateDTO {
 
     @IsString()
     @Length(
-        getTemplateValidatorParam('createdBy', 'minLength') || 4,
-        getTemplateValidatorParam('createdBy', 'maxLength') || 36,
-    )
-    createdBy: string;
-
-    @IsDateString()
-    createdAt: Date;
-
-    @IsString()
-    @Length(
         getTemplateValidatorParam('fileId', 'minLength') || 4,
         getTemplateValidatorParam('fileId', 'maxLength') || 36,
     )

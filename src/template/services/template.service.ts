@@ -9,18 +9,26 @@ import { TemplateCreateDTO } from '../dto/templateCreate.dto';
 import { TemplateUpdateDTO } from '../dto/templateUpdate.dto';
 import { templateResDtoMapper } from '../dto/templateResDto.mapper';
 import { TemplateRepoException } from '../exceptions/templateRepo.exception';
+import { ConfigService } from '@nestjs/config';
+import { TemplateProceederData } from '../types/templateProceederData.type';
 
 @Injectable({ scope: Scope.REQUEST })
 export class TemplateService {
+    private readonly auth0Namespace: string;
     constructor(
         @InjectRepository(Template)
         private readonly templateRepository: Repository<Template>,
         @Inject(REQUEST) private readonly request: Request & { user: any },
-    ) {}
+        private readonly configService: ConfigService,
+    ) {
+        this.auth0Namespace = this.configService.get<string>(
+            'AUTH0_NAMESPACE',
+            '',
+        );
+    }
 
     public async getAllTemplates(): Promise<TemplateResDTO[]> {
         try {
-            // console.log('request.user ----> ', this.request.user);
             const allTemplates: Template[] =
                 await this.templateRepository.find();
             return allTemplates.map((template: Template) =>
@@ -56,8 +64,14 @@ export class TemplateService {
         templateCreateDTO: TemplateCreateDTO,
     ): Promise<TemplateResDTO> {
         try {
-            const newTemplate: Template =
-                this.templateRepository.create(templateCreateDTO);
+            const { proceedingBy, proceedingAt }: TemplateProceederData =
+                this.getCreatindData();
+
+            const newTemplate: Template = this.templateRepository.create({
+                createdBy: proceedingBy,
+                createdAt: proceedingAt,
+                ...templateCreateDTO,
+            });
             const savedTemplate: Template = await this.templateRepository.save(
                 newTemplate,
             );
@@ -80,9 +94,16 @@ export class TemplateService {
         templateUpdateDTO: TemplateUpdateDTO,
     ): Promise<TemplateResDTO> {
         try {
+            const { proceedingBy, proceedingAt }: TemplateProceederData =
+                this.getCreatindData();
+
             const result: UpdateResult = await this.templateRepository.update(
                 templateId,
-                templateUpdateDTO,
+                {
+                    updatedBy: proceedingBy,
+                    updatedAt: proceedingAt,
+                    ...templateUpdateDTO,
+                },
             );
             if (!result.affected)
                 throw new NotFoundException(
@@ -121,5 +142,13 @@ export class TemplateService {
                 { cause: error },
             );
         }
+    }
+
+    private getCreatindData(): TemplateProceederData {
+        return {
+            proceedingAt: new Date(Date.now()),
+            proceedingBy:
+                this.request?.user?.[`${this.auth0Namespace}/userInfo`].user_id,
+        };
     }
 }

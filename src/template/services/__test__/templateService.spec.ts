@@ -6,7 +6,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { TemplateServiceSpecSetup } from './templateServiceSpec.setup';
 import { TemplateCreateDTO } from 'src/template/dto/templateCreate.dto';
 import { TemplateResDTO } from 'src/template/dto/templateRes.dto';
-import { TemplateUpdateDTO } from 'src/template/dto/templateUpdate.dto';
+import { ConfigService } from '@nestjs/config';
 
 describe('TemplateService test suit', () => {
     let templateService: TemplateService;
@@ -25,6 +25,7 @@ describe('TemplateService test suit', () => {
                     provide: TEMPLATE_REPO_TOKEN,
                     useValue: setup.mockedRepositoryMethods,
                 },
+                ConfigService
             ],
         }).compile();
 
@@ -94,14 +95,11 @@ describe('TemplateService test suit', () => {
             );
 
             //then
-            expect(result).toEqual({
+            expect(result).toMatchObject({
                 id: 1,
                 ...exampleMockTemplate,
             });
-            expect(repoSaveSpy).toBeCalledWith({
-                id: 1,
-                ...exampleMockTemplate,
-            });
+            expect(repoSaveSpy).toBeCalledTimes(1);
         });
     });
 
