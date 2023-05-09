@@ -25,7 +25,7 @@ describe('TemplateService test suit', () => {
                     provide: TEMPLATE_REPO_TOKEN,
                     useValue: setup.mockedRepositoryMethods,
                 },
-                ConfigService
+                ConfigService,
             ],
         }).compile();
 
