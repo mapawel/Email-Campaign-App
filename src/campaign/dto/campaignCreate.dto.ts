@@ -1,4 +1,4 @@
-import { IsString, IsDateString, Length } from 'class-validator';
+import { IsString, Length, IsEmail } from 'class-validator';
 import validators from '../../validation/settings/validators.json';
 import { buildValidatorKeyParamsGetter } from '../../validation/utils';
 
@@ -30,6 +30,7 @@ export class CampaignCreateDTO {
     )
     eMailTitle: string;
 
+    @IsEmail()
     eMails: string[];
 
     @IsString()
@@ -39,15 +40,6 @@ export class CampaignCreateDTO {
     )
     manager: string;
 
-    employees: string[];
-
-    @IsDateString()
-    preparedAt: Date;
-
     @IsString()
-    @Length(
-        getCampaignValidatorParam('preparedBy', 'minLength') || 4,
-        getCampaignValidatorParam('preparedBy', 'maxLength') || 36,
-    )
-    preparedBy: string;
+    employees: string[];
 }

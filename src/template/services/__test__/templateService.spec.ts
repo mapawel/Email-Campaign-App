@@ -92,6 +92,7 @@ describe('TemplateService test suit', () => {
             // when
             const result: TemplateResDTO = await templateService.createTemplate(
                 exampleMockTemplate,
+                'exampleUserId'
             );
 
             //then
@@ -115,6 +116,7 @@ describe('TemplateService test suit', () => {
             await templateService.updateTemplate(
                 1,
                 setup.exampleMockUpdateTemplate,
+                'exampleUserId'
             );
 
             //then
@@ -140,6 +142,7 @@ describe('TemplateService test suit', () => {
             const result: TemplateResDTO = await templateService.updateTemplate(
                 1,
                 setup.exampleMockUpdateTemplate,
+                'exampleUserId'
             );
 
             //then

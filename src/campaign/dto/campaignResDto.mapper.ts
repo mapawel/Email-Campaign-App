@@ -17,8 +17,8 @@ export const campaignResDtoMapper = (
     employees: campaignEntity.employees,
     updatedAt: campaignEntity.updatedAt,
     updatedBy: campaignEntity.updatedBy,
-    preparedAt: campaignEntity.preparedAt,
-    preparedBy: campaignEntity.preparedBy,
+    createdAt: campaignEntity.createdAt,
+    createdBy: campaignEntity.createdBy,
     executedAt: campaignEntity.executedAt,
     executedBy: campaignEntity.executedBy,
 });

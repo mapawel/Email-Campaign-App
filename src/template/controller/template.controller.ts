@@ -17,7 +17,7 @@ import { Permissions } from '../../auth/permissions/permissions.decorator';
 import { PermissionsEnum } from '../../auth/permissions/permissions.enum';
 import { PermissionsGuard } from '../../auth/permissions/permissions.guard';
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
+import { UserId } from 'src/decorators/userId.decorator';
 
 @Controller(Routes.TEMPLATE_ROUTE)
 export class TemplateController {
@@ -44,8 +44,12 @@ export class TemplateController {
     @Post()
     async createTemplate(
         @Body() templateCreateDTO: TemplateCreateDTO,
+        @UserId() userId: string,
     ): Promise<TemplateResDTO> {
-        return await this.templateService.createTemplate(templateCreateDTO);
+        return await this.templateService.createTemplate(
+            templateCreateDTO,
+            userId,
+        );
     }
 
     @UseGuards(AuthGuard('jwt'), PermissionsGuard)
@@ -54,10 +58,12 @@ export class TemplateController {
     async updateTemplate(
         @Param('id') templateId: number,
         @Body() templateUpdateDTO: TemplateUpdateDTO,
+        @UserId() userId: string,
     ): Promise<TemplateResDTO> {
         return await this.templateService.updateTemplate(
             templateId,
             templateUpdateDTO,
+            userId,
         );
     }
 

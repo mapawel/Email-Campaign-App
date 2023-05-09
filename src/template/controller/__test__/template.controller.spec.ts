@@ -78,6 +78,7 @@ describe('TemplateController test suit:', () => {
             // when
             const result = await templateController.createTemplate(
                 setup.exampleMockCreateTemplate,
+                'exampleUserId',
             );
 
             //then
@@ -98,6 +99,7 @@ describe('TemplateController test suit:', () => {
             const result = await templateController.updateTemplate(
                 1,
                 setup.exampleMockUpdateTemplate,
+                'exampleUserId',
             );
 
             //then

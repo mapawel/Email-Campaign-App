@@ -12,20 +12,12 @@ import { TemplateRepoException } from '../exceptions/templateRepo.exception';
 import { ConfigService } from '@nestjs/config';
 import { TemplateProceederData } from '../types/templateProceederData.type';
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class TemplateService {
-    private readonly auth0Namespace: string;
     constructor(
         @InjectRepository(Template)
         private readonly templateRepository: Repository<Template>,
-        @Inject(REQUEST) private readonly request: Request & { user: any },
-        private readonly configService: ConfigService,
-    ) {
-        this.auth0Namespace = this.configService.get<string>(
-            'AUTH0_NAMESPACE',
-            '',
-        );
-    }
+    ) {}
 
     public async getAllTemplates(): Promise<TemplateResDTO[]> {
         try {
@@ -62,14 +54,12 @@ export class TemplateService {
 
     public async createTemplate(
         templateCreateDTO: TemplateCreateDTO,
+        createdBy: string,
     ): Promise<TemplateResDTO> {
         try {
-            const { proceedingBy, proceedingAt }: TemplateProceederData =
-                this.getCreatindData();
-
             const newTemplate: Template = this.templateRepository.create({
-                createdBy: proceedingBy,
-                createdAt: proceedingAt,
+                createdBy,
+                createdAt: new Date(Date.now()),
                 ...templateCreateDTO,
             });
             const savedTemplate: Template = await this.templateRepository.save(
@@ -92,16 +82,14 @@ export class TemplateService {
     public async updateTemplate(
         templateId: number,
         templateUpdateDTO: TemplateUpdateDTO,
+        updatedBy: string,
     ): Promise<TemplateResDTO> {
         try {
-            const { proceedingBy, proceedingAt }: TemplateProceederData =
-                this.getCreatindData();
-
             const result: UpdateResult = await this.templateRepository.update(
                 templateId,
                 {
-                    updatedBy: proceedingBy,
-                    updatedAt: proceedingAt,
+                    updatedBy,
+                    updatedAt: new Date(Date.now()),
                     ...templateUpdateDTO,
                 },
             );
@@ -142,13 +130,5 @@ export class TemplateService {
                 { cause: error },
             );
         }
-    }
-
-    private getCreatindData(): TemplateProceederData {
-        return {
-            proceedingAt: new Date(Date.now()),
-            proceedingBy:
-                this.request?.user?.[`${this.auth0Namespace}/userInfo`].user_id,
-        };
     }
 }

@@ -54,7 +54,7 @@ export class Campaign {
     eMails: string[];
 
     @Column()
-    manager: string; // user id from Auth0
+    manager: string;
 
     @Column('simple-array', { nullable: true })
     employees: string[];
@@ -63,17 +63,17 @@ export class Campaign {
     updatedAt: Date;
 
     @Column()
-    updatedBy: string; // user id from Auth0
+    updatedBy: string;
 
     @Column({ nullable: true })
-    preparedAt: Date;
+    createdAt: Date;
 
     @Column({ nullable: true })
-    preparedBy: string; // user id from Auth0
+    createdBy: string;
 
     @Column({ nullable: true })
     executedAt: Date;
 
     @Column({ nullable: true })
-    executedBy: string; // user id from Auth0
+    executedBy: string;
 }

@@ -17,8 +17,8 @@ export class CampaignResDTO {
     employees: string[];
     updatedAt: Date;
     updatedBy: string;
-    preparedAt: Date;
-    preparedBy: string;
+    createdAt: Date;
+    createdBy: string;
     executedAt: Date;
     executedBy: string;
 }
