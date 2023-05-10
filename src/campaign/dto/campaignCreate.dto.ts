@@ -1,6 +1,15 @@
-import { IsString, Length, IsEmail } from 'class-validator';
+import {
+    IsString,
+    Length,
+    IsEmail,
+    IsArray,
+    ValidateNested,
+} from 'class-validator';
+import { Type, Transform } from 'class-transformer';
 import validators from '../../validation/settings/validators.json';
 import { buildValidatorKeyParamsGetter } from '../../validation/utils';
+import { MailContentDTO } from '../../campaign/dto/mailContent.dto';
+import { trimTransformer } from '../../validation/utils';
 
 const getCampaignValidatorParam =
     buildValidatorKeyParamsGetter<CampaignCreateDTO>({
@@ -14,6 +23,7 @@ export class CampaignCreateDTO {
         getCampaignValidatorParam('name', 'minLength') || 4,
         getCampaignValidatorParam('name', 'maxLength') || 36,
     )
+    @Transform(trimTransformer)
     name: string;
 
     @IsString()
@@ -21,6 +31,7 @@ export class CampaignCreateDTO {
         getCampaignValidatorParam('description', 'minLength') || 4,
         getCampaignValidatorParam('description', 'maxLength') || 36,
     )
+    @Transform(trimTransformer)
     description: string;
 
     @IsString()
@@ -28,9 +39,15 @@ export class CampaignCreateDTO {
         getCampaignValidatorParam('eMailTitle', 'minLength') || 4,
         getCampaignValidatorParam('eMailTitle', 'maxLength') || 36,
     )
+    @Transform(trimTransformer)
     eMailTitle: string;
 
-    @IsEmail()
+    @ValidateNested()
+    @Type(() => MailContentDTO)
+    content: MailContentDTO;
+
+    @IsArray()
+    @IsEmail({}, { each: true })
     eMails: string[];
 
     @IsString()
@@ -38,8 +55,19 @@ export class CampaignCreateDTO {
         getCampaignValidatorParam('manager', 'minLength') || 4,
         getCampaignValidatorParam('manager', 'maxLength') || 36,
     )
+    @Transform(trimTransformer)
     manager: string;
 
-    @IsString()
+    @IsArray()
+    @IsString({ each: true })
+    @Transform(
+        ({ value }) =>
+            (value as string[]).map((value: string) =>
+                trimTransformer({ value }),
+            ),
+        {
+            toClassOnly: true,
+        },
+    )
     employees: string[];
 }

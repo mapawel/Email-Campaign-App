@@ -41,6 +41,7 @@ export class CampaignService {
             }
             return campaignResDtoMapper(campaign);
         } catch (error) {
+            if (error instanceof NotFoundException) throw error;
             throw new CampaignRepoException(
                 `Error while getting campaign with passed id: ${campaignId}`,
                 { cause: error },
@@ -50,10 +51,14 @@ export class CampaignService {
 
     public async createCampaign(
         campaignCreateDTO: CampaignCreateDTO,
+        createdBy: string,
     ): Promise<CampaignResDTO> {
         try {
-            const newCampaign: Campaign =
-                this.campaignRepository.create(campaignCreateDTO);
+            const newCampaign: Campaign = this.campaignRepository.create({
+                createdBy,
+                createdAt: new Date(Date.now()),
+                ...campaignCreateDTO,
+            });
             const savedCampaign: Campaign = await this.campaignRepository.save(
                 newCampaign,
             );
@@ -74,11 +79,16 @@ export class CampaignService {
     public async updateCampaign(
         campaignId: number,
         campaignUpdateDTO: CampaignUpdateDTO,
+        updatedBy: string,
     ): Promise<CampaignResDTO> {
         try {
             const result: UpdateResult = await this.campaignRepository.update(
                 campaignId,
-                campaignUpdateDTO,
+                {
+                    updatedBy,
+                    updatedAt: new Date(Date.now()),
+                    ...campaignUpdateDTO,
+                },
             );
             if (!result.affected)
                 throw new NotFoundException(
@@ -90,6 +100,7 @@ export class CampaignService {
             );
             return updatedCampaign;
         } catch (error) {
+            if (error instanceof NotFoundException) throw error;
             throw new CampaignRepoException(
                 `Error while updating campaign with passed id: ${campaignId}, payload: ${JSON.stringify(
                     campaignUpdateDTO,
@@ -112,6 +123,7 @@ export class CampaignService {
                 );
             return true;
         } catch (error) {
+            if (error instanceof NotFoundException) throw error;
             throw new CampaignRepoException(
                 `Error while deleting campaign with passed id: ${campaignId}`,
                 { cause: error },

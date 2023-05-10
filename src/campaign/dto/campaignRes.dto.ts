@@ -1,5 +1,5 @@
 import { CampaignStatus } from '../status/campaign-status.enum';
-import { MailContentType } from '../../template/types/Mail-content.type';
+import { MailContentDTO } from './mailContent.dto';
 import { TemplateResDTO } from '../../template/dto/templateRes.dto';
 import { EmailProviderResDTO } from '../../email-provider/dto/EmailProviderRes.dto';
 
@@ -10,7 +10,7 @@ export class CampaignResDTO {
     status: CampaignStatus;
     template: TemplateResDTO;
     eMailProvider: EmailProviderResDTO;
-    content: MailContentType;
+    content: MailContentDTO;
     eMailTitle: string;
     eMails: string[];
     manager: string;

@@ -6,8 +6,8 @@ import {
     JoinColumn,
 } from 'typeorm';
 import { CampaignStatus } from '../status/campaign-status.enum';
-import { MailContentType } from 'src/template/types/Mail-content.type';
-import { Template } from 'src/template/entity/Template.entity';
+import { MailContentDTO } from '../dto/mailContent.dto';
+import { Template } from '../../template/entity/Template.entity';
 import { EmailProvider } from '../../email-provider/entity/Email-provider.entity';
 
 @Entity()
@@ -45,30 +45,30 @@ export class Campaign {
     eMailProvider: EmailProvider;
 
     @Column('json', { nullable: true })
-    content: MailContentType;
+    content: MailContentDTO;
 
     @Column({ nullable: true })
     eMailTitle: string;
 
-    @Column('simple-array', { nullable: true })
+    @Column('simple-array')
     eMails: string[];
 
     @Column()
     manager: string;
 
-    @Column('simple-array', { nullable: true })
+    @Column('simple-array')
     employees: string[];
 
-    @Column()
+    @Column({ nullable: true })
     updatedAt: Date;
 
-    @Column()
+    @Column({ nullable: true })
     updatedBy: string;
 
-    @Column({ nullable: true })
+    @Column()
     createdAt: Date;
 
-    @Column({ nullable: true })
+    @Column()
     createdBy: string;
 
     @Column({ nullable: true })

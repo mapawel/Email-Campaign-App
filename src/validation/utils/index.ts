@@ -1,7 +1,9 @@
+import { Transform } from 'class-transformer';
+
 type validatorParamsType = 'minLength' | 'maxLength';
 
 type validatorsObjectType = Record<
-    'template' | 'campaign',
+    'template' | 'campaign' | 'mailContent' | 'contentBlock',
     Record<any, Record<string, number>>
 >;
 
@@ -19,3 +21,6 @@ export function buildValidatorKeyParamsGetter<validatingEntity>({
         return validatorsObject?.[entityName]?.[key]?.[param] || null;
     };
 }
+
+export const trimTransformer = ({ value }: { value: unknown }) =>
+    typeof value === 'string' ? value.trim() : value;

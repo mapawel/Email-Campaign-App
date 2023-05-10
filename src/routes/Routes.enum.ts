@@ -3,4 +3,5 @@ export enum Routes {
     AUTH_ROUTE = '/auth',
     AUTH_CALLBACK_ROUTE = '/callback',
     TEMPLATE_ROUTE = '/templates',
+    CAMPAIGN_ROUTE = '/campaigns',
 }

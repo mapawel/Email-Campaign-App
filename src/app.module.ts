@@ -5,7 +5,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { AuthModule } from './auth/Auth.module';
 import { MainExceptionFilter } from './exceptionFilters/mainException.filter';
 import { TemplateModule } from './template/template.module';
-
+import { CampaignModule } from './campaign/campaign.module';
 @Module({
     imports: [
         ConfigModule.forRoot({
@@ -29,6 +29,7 @@ import { TemplateModule } from './template/template.module';
         }),
         AuthModule,
         TemplateModule,
+        CampaignModule,
     ],
     controllers: [],
     providers: [

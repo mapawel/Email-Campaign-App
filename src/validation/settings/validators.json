@@ -30,5 +30,73 @@
             "minLength": 4,
             "maxLength": 36
         }
+    },
+    "mailContent": {
+        "logoUrl": {
+            "minLength": 12,
+            "maxLength": 120
+        },
+        "logoAlt": {
+            "minLength": 4,
+            "maxLength": 36
+        },
+        "mainTitle": {
+            "minLength": 6,
+            "maxLength": 36
+        },
+        "subtitle": {
+            "minLength": 4,
+            "maxLength": 36
+        },
+        "footerLongText": {
+            "minLength": 4,
+            "maxLength": 24
+        },
+        "footerTextLink": {
+            "minLength": 2,
+            "maxLength": 24
+        },
+        "footerLinkUrl": {
+            "minLength": 12,
+            "maxLength": 120
+        },
+        "footerLogoUrl": {
+            "minLength": 12,
+            "maxLength": 120
+        },
+        "footerLogoAlt": {
+            "minLength": 4,
+            "maxLength": 24
+        }
+    },
+    "contentBlock": {
+        "title": {
+            "minLength": 4,
+            "maxLength": 24
+        },
+        "subtitle": {
+            "minLength": 4,
+            "maxLength": 24
+        },
+        "text": {
+            "minLength": 24,
+            "maxLength": 600
+        },
+        "linkText": {
+            "minLength": 2,
+            "maxLength": 8
+        },
+        "linkUrl": {
+            "minLength": 12,
+            "maxLength": 120
+        },
+        "imageUrl": {
+            "minLength": 12,
+            "maxLength": 120
+        },
+        "imageAlt": {
+            "minLength": 4,
+            "maxLength": 24
+        }
     }
 }

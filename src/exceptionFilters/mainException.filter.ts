@@ -6,6 +6,7 @@ import {
     Logger,
     LoggerService,
     BadRequestException,
+    NotFoundException,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -22,6 +23,9 @@ export class MainExceptionFilter implements ExceptionFilter {
             exception instanceof HttpException ? exception.getStatus() : 500;
 
         this.logger.error(this.buildFullExceptionMessage(exception));
+
+        if (exception instanceof NotFoundException)
+            return response.status(status).json(exception.getResponse());
 
         if (exception instanceof BadRequestException)
             return response.status(status).json(exception.getResponse());

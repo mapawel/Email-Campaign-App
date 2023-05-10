@@ -1,6 +1,4 @@
-import { Injectable, Inject, NotFoundException, Scope } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
-import { Request } from 'express';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Template } from '../entity/Template.entity';
@@ -9,8 +7,6 @@ import { TemplateCreateDTO } from '../dto/templateCreate.dto';
 import { TemplateUpdateDTO } from '../dto/templateUpdate.dto';
 import { templateResDtoMapper } from '../dto/templateResDto.mapper';
 import { TemplateRepoException } from '../exceptions/templateRepo.exception';
-import { ConfigService } from '@nestjs/config';
-import { TemplateProceederData } from '../types/templateProceederData.type';
 
 @Injectable()
 export class TemplateService {
@@ -45,6 +41,7 @@ export class TemplateService {
             }
             return templateResDtoMapper(template);
         } catch (error) {
+            if (error instanceof NotFoundException) throw error;
             throw new TemplateRepoException(
                 `Error while getting template with passed id: ${templateId}`,
                 { cause: error },
@@ -103,6 +100,7 @@ export class TemplateService {
             );
             return updatedTemplate;
         } catch (error) {
+            if (error instanceof NotFoundException) throw error;
             throw new TemplateRepoException(
                 `Error while updating template with passed id: ${templateId}, payload: ${JSON.stringify(
                     templateUpdateDTO,
@@ -125,6 +123,7 @@ export class TemplateService {
                 );
             return true;
         } catch (error) {
+            if (error instanceof NotFoundException) throw error;
             throw new TemplateRepoException(
                 `Error while deleting template with passed id: ${templateId}`,
                 { cause: error },
