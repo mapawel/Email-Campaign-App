@@ -20,4 +20,4 @@ export interface SmtpConfig {
 type SmtpAuth = {
     user: string;
     pass: string;
-}
+};

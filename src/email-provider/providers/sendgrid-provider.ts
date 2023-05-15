@@ -5,7 +5,12 @@ import { SengridConfig } from '../types/provider-config.interface';
 export class SendGridProvider implements MailProvider {
     constructor(private httpService: HttpService) {}
 
-    async sendMail(to: string, subject: string, text: string, config: SengridConfig) {
+    async sendMail(
+        to: string,
+        subject: string,
+        text: string,
+        config: SengridConfig,
+    ) {
         const data = {
             personalizations: [
                 {

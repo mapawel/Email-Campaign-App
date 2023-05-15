@@ -5,7 +5,12 @@ import { MailgunConfig } from '../types/provider-config.interface';
 export class MailgunProvider implements MailProvider {
     constructor(private httpService: HttpService) {}
 
-    async sendMail(to: string, subject: string, text: string, config: MailgunConfig) {
+    async sendMail(
+        to: string,
+        subject: string,
+        text: string,
+        config: MailgunConfig,
+    ) {
         const data = {
             from: config.email,
             to,
