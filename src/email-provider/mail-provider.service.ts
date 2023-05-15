@@ -4,6 +4,11 @@ import { MailgunProvider } from './providers/mailgun-provider';
 import { HttpService } from '@nestjs/axios';
 import { SmtpProvider } from './providers/smtp-provider';
 import { SendGridProvider } from './providers/sendgrid-provider';
+import {
+    MailgunConfig,
+    SengridConfig,
+    SmtpConfig,
+} from './types/provider-config.interface';
 
 @Injectable()
 export class EmailProviderService {
@@ -20,10 +25,24 @@ export class EmailProviderService {
         subject: string,
         text: string,
         providerName: string,
+        providerConfig: MailgunConfig | SengridConfig | SmtpConfig,
     ) {
         const provider = this.providers.get(providerName);
+
         if (provider) {
-            await provider.sendMail(to, subject, text);
+            switch (providerName) {
+                case 'mailgun':
+                    await provider.sendMail(to, subject, text, providerConfig);
+                    break;
+                case 'smtp':
+                    await provider.sendMail(to, subject, text, providerConfig);
+                    break;
+                case 'sendgrid':
+                    await provider.sendMail(to, subject, text, providerConfig);
+                    break;
+                default:
+                    throw new Error('Invalid provider name');
+            }
         }
     }
 }

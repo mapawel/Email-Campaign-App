@@ -1,11 +1,11 @@
 import { HttpService } from '@nestjs/axios';
 import { MailProvider } from '../types/email-provider.interface';
-import { sendgridConfig } from './config/sengrid.config';
+import { SengridConfig } from '../types/provider-config.interface';
 
 export class SendGridProvider implements MailProvider {
     constructor(private httpService: HttpService) {}
 
-    async sendMail(to: string, subject: string, text: string) {
+    async sendMail(to: string, subject: string, text: string, config: SengridConfig) {
         const data = {
             personalizations: [
                 {
@@ -13,7 +13,7 @@ export class SendGridProvider implements MailProvider {
                     subject,
                 },
             ],
-            from: { email: sendgridConfig.email },
+            from: { email: config.email },
             content: [
                 {
                     type: 'text/plain',
@@ -24,7 +24,7 @@ export class SendGridProvider implements MailProvider {
         await this.httpService
             .post(`https://api.sendgrid.com/v3/mail/send`, data, {
                 headers: {
-                    Authorization: `Bearer ${sendgridConfig.apiKey}`,
+                    Authorization: `Bearer ${config.apiKey}`,
                 },
             })
             .toPromise();

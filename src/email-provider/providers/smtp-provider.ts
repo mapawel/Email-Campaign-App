@@ -1,17 +1,22 @@
 import { createTransport } from 'nodemailer';
 import { MailProvider } from '../types/email-provider.interface';
-import { smtpConfig } from './config/smtp.config';
+import { SmtpConfig } from '../types/provider-config.interface';
+import Mail from 'nodemailer/lib/mailer';
 
 export class SmtpProvider implements MailProvider {
-    private transporter;
+    private transporter: Mail;
 
-    constructor() {
-        this.transporter = createTransport(smtpConfig);
-    }
+    constructor() {}
 
-    async sendMail(to: string, subject: string, text: string) {
+    async sendMail(
+        to: string,
+        subject: string,
+        text: string,
+        config: SmtpConfig,
+    ) {
+        this.transporter = createTransport(config);
         await this.transporter.sendMail({
-            from: smtpConfig.email,
+            from: config.email,
             to,
             subject,
             text,
