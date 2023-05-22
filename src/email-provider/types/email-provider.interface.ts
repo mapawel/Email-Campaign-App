@@ -1,14 +1,15 @@
 import {
     MailgunConfig,
-    SengridConfig,
+    SendgridConfig,
     SmtpConfig,
 } from './provider-config.interface';
 
 export interface MailProvider {
     sendMail(
+        from: string,
         to: string,
         subject: string,
-        text: string,
-        providerConfig: MailgunConfig | SengridConfig | SmtpConfig,
+        template: string,
+        providerConfig: MailgunConfig | SendgridConfig | SmtpConfig,
     ): Promise<void>;
 }

@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EmailProviderService } from './mail-provider.service';
-import { HttpService } from '@nestjs/axios';
-import { mockDeep } from 'jest-mock-extended';
+import { StorageService } from 'src/storage/storage.service';
 
 describe('EmailProviderService', () => {
     let service: EmailProviderService;
@@ -11,8 +10,10 @@ describe('EmailProviderService', () => {
             providers: [
                 EmailProviderService,
                 {
-                    provide: HttpService,
-                    useValue: mockDeep<HttpService>(),
+                    provide: StorageService,
+                    useValue: {
+                        readFile: jest.fn(),
+                    },
                 },
             ],
         }).compile();

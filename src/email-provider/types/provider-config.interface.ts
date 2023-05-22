@@ -1,12 +1,10 @@
 export interface MailgunConfig {
     apiKey: string;
-    domain: string;
-    email: string;
+    domain: string | undefined;
 }
 
-export interface SengridConfig {
+export interface SendgridConfig {
     apiKey: string;
-    email: string;
 }
 
 export interface SmtpConfig {
@@ -14,7 +12,6 @@ export interface SmtpConfig {
     port: 587;
     secure: false;
     auth: SmtpAuth;
-    email: string;
 }
 
 type SmtpAuth = {

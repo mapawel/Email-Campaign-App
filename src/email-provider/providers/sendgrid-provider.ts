@@ -1,37 +1,28 @@
-import { HttpService } from '@nestjs/axios';
+import { StorageService } from 'src/storage/storage.service';
 import { MailProvider } from '../types/email-provider.interface';
-import { SengridConfig } from '../types/provider-config.interface';
+import { SendgridConfig } from '../types/provider-config.interface';
+import * as SendGrid from '@sendgrid/mail';
 
 export class SendGridProvider implements MailProvider {
-    constructor(private httpService: HttpService) {}
+    constructor(private readonly storage: StorageService) {}
 
     async sendMail(
+        from: string,
         to: string,
         subject: string,
-        text: string,
-        config: SengridConfig,
+        template: string,
+        config: SendgridConfig,
     ) {
-        const data = {
-            personalizations: [
-                {
-                    to: [{ email: to }],
-                    subject,
-                },
-            ],
-            from: { email: config.email },
-            content: [
-                {
-                    type: 'text/plain',
-                    value: text,
-                },
-            ],
+        const html = await this.storage.readFile(template);
+
+        SendGrid.setApiKey(config.apiKey);
+
+        const mail = {
+            from,
+            to,
+            subject,
+            html,
         };
-        await this.httpService
-            .post(`https://api.sendgrid.com/v3/mail/send`, data, {
-                headers: {
-                    Authorization: `Bearer ${config.apiKey}`,
-                },
-            })
-            .toPromise();
+        await SendGrid.send(mail);
     }
 }

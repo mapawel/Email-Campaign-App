@@ -2,24 +2,30 @@ import { createTransport } from 'nodemailer';
 import { MailProvider } from '../types/email-provider.interface';
 import { SmtpConfig } from '../types/provider-config.interface';
 import Mail from 'nodemailer/lib/mailer';
+import { StorageService } from 'src/storage/storage.service';
 
 export class SmtpProvider implements MailProvider {
     private transporter: Mail;
 
-    constructor() {}
+    constructor(private readonly storage: StorageService) {}
 
     async sendMail(
+        from: string,
         to: string,
         subject: string,
-        text: string,
+        template: string,
         config: SmtpConfig,
     ) {
+        const html = await this.storage.readFile(template);
+
         this.transporter = createTransport(config);
-        await this.transporter.sendMail({
-            from: config.email,
+
+        const mailOptions = {
+            from,
             to,
             subject,
-            text,
-        });
+            html,
+        };
+        await this.transporter.sendMail(mailOptions);
     }
 }

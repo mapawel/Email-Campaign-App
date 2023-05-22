@@ -1,34 +1,40 @@
-import { HttpService } from '@nestjs/axios';
+import { StorageService } from 'src/storage/storage.service';
 import { MailProvider } from '../types/email-provider.interface';
 import { MailgunConfig } from '../types/provider-config.interface';
+import nodemailer from 'nodemailer';
+import mailgunTransport = require('nodemailer-mailgun-transport');
 
 export class MailgunProvider implements MailProvider {
-    constructor(private httpService: HttpService) {}
+
+    constructor(private readonly storage: StorageService) {}
 
     async sendMail(
+        from: string,
         to: string,
         subject: string,
-        text: string,
+        template: string,
         config: MailgunConfig,
     ) {
-        const data = {
-            from: config.email,
+
+        const html = await this.storage.readFile(template);
+
+        const auth: mailgunTransport.Options = {
+            auth: {
+                api_key: config.apiKey,
+                domain: config.domain,
+            },
+        };
+        const transport: nodemailer.Transporter = nodemailer.createTransport(
+            mailgunTransport(auth),
+        );
+
+        const mailOptions: nodemailer.SendMailOptions = {
+            from,
             to,
             subject,
-            text,
+            html,
         };
-        const auth = `api:${config.apiKey}`;
-        const encodedAuth = Buffer.from(auth).toString('base64');
-        await this.httpService
-            .post(
-                `https://api.mailgun.net/v3/${config.domain}/messages`,
-                data,
-                {
-                    headers: {
-                        Authorization: `Basic ${encodedAuth}`,
-                    },
-                },
-            )
-            .toPromise();
+
+        await transport.sendMail(mailOptions);
     }
 }
