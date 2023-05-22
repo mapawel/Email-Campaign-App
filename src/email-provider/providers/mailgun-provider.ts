@@ -5,7 +5,6 @@ import nodemailer from 'nodemailer';
 import mailgunTransport = require('nodemailer-mailgun-transport');
 
 export class MailgunProvider implements MailProvider {
-
     constructor(private readonly storage: StorageService) {}
 
     async sendMail(
@@ -15,7 +14,6 @@ export class MailgunProvider implements MailProvider {
         template: string,
         config: MailgunConfig,
     ) {
-
         const html = await this.storage.readFile(template);
 
         const auth: mailgunTransport.Options = {
