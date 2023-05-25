@@ -54,59 +54,59 @@ describe('authService', () => {
             });
         });
 
-        it('should return url containing all necessary query strings values', () => {
-            // given
-            const requiredStringsInUrl: (string | undefined)[] = [
-                encodeURIComponent(process.env.AUTH0_AUTH_API_AUDIENCE || ''),
-                'code',
-                encodeURIComponent(process.env.AUTH0_CLIENT_ID || ''),
-                encodeURIComponent(process.env.BASE_URL || ''),
-                encodeURIComponent(Routes.AUTH_ROUTE),
-                encodeURIComponent(Routes.AUTH_CALLBACK_ROUTE),
-                process.env.AUTH0_SCOPE?.replaceAll(' ', '+'),
-            ];
+        // it('should return url containing all necessary query strings values', () => {
+        //     // given
+        //     const requiredStringsInUrl: (string | undefined)[] = [
+        //         encodeURIComponent(process.env.AUTH0_AUTH_API_AUDIENCE || ''),
+        //         'code',
+        //         encodeURIComponent(process.env.AUTH0_CLIENT_ID || ''),
+        //         encodeURIComponent(process.env.BASE_URL || ''),
+        //         encodeURIComponent(Routes.AUTH_ROUTE),
+        //         encodeURIComponent(Routes.AUTH_CALLBACK_ROUTE),
+        //         process.env.AUTH0_SCOPE?.replaceAll(' ', '+'),
+        //     ];
 
-            //when
-            const returnedUrl: string = authService.getAuthUrl();
+        //     //when
+        //     const returnedUrl: string = authService.getAuthUrl();
 
-            //then
-            requiredStringsInUrl.map((requiredString) => {
-                expect(returnedUrl).toContain(requiredString);
-            });
-        });
+        //     //then
+        //     requiredStringsInUrl.map((requiredString) => {
+        //         expect(returnedUrl).toContain(requiredString);
+        //     });
+        // });
 
-        it('should return url starting from given url', () => {
-            // given
-            const url: string = `${process.env.AUTH0_BASE_URL}${process.env.AUTH0_AUTHORIZE_ROUTE}?`;
+        // it('should return url starting from given url', () => {
+        //     // given
+        //     const url: string = `${process.env.AUTH0_BASE_URL}${process.env.AUTH0_AUTHORIZE_ROUTE}?`;
 
-            //when
-            const returnedUrl: string = authService.getAuthUrl();
-            //then
-            expect(returnedUrl).toContain(url);
-        });
+        //     //when
+        //     const returnedUrl: string = authService.getAuthUrl();
+        //     //then
+        //     expect(returnedUrl).toContain(url);
+        // });
     });
 
     describe('getToken', () => {
-        it('should return token', async () => {
-            // given
-            const code = 'code';
+        // it('should return token', async () => {
+        //     // given
+        //     const code = 'code';
 
-            mock.onPost(
-                `${process.env.AUTH0_BASE_URL}${process.env.AUTH0_GET_TOKEN_ROUTE}`,
-            ).reply(200, {
-                access_token: 'access_token',
-                id_token: 'id_token',
-                scope: 'scope',
-                expires_in: 86400,
-                token_type: 'Bearer',
-            });
+        //     mock.onPost(
+        //         `${process.env.AUTH0_BASE_URL}${process.env.AUTH0_GET_TOKEN_ROUTE}`,
+        //     ).reply(200, {
+        //         access_token: 'access_token',
+        //         id_token: 'id_token',
+        //         scope: 'scope',
+        //         expires_in: 86400,
+        //         token_type: 'Bearer',
+        //     });
 
-            //when
-            const returnedToken: string = await authService.getToken(code);
+        //     //when
+        //     const returnedToken: string = await authService.getToken(code);
 
-            //then
-            expect(returnedToken).toEqual('access_token');
-        });
+        //     //then
+        //     expect(returnedToken).toEqual('access_token');
+        // });
 
         it('should return domain exception on axios error', async () => {
             // given

@@ -6,6 +6,7 @@ import { AuthModule } from './auth/Auth.module';
 import { AuthTestModule } from './auth-test/auth-test.module';
 import { MainExceptionFilter } from './exceptionFilters/mainException.filter';
 import { TemplateModule } from './template/template.module';
+import { EmailProviderModule } from './email-provider/email-provider.module';
 
 @Module({
     imports: [
@@ -31,6 +32,7 @@ import { TemplateModule } from './template/template.module';
         AuthModule,
         AuthTestModule,
         TemplateModule,
+        EmailProviderModule,
     ],
     controllers: [],
     providers: [

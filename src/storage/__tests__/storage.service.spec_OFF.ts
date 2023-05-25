@@ -44,6 +44,10 @@ describe('StorageService', () => {
         jest.clearAllMocks();
     });
 
+    afterEach(() => {
+        mock.restore();
+    });
+
     afterAll(() => {
         mock.restore();
     });
