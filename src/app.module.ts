@@ -2,16 +2,17 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_FILTER } from '@nestjs/core';
-import { MainExceptionFilter } from './app-exception-filters/main-exception.filter';
-import { StorageModule } from './storage/storage.module';
-import { MulterModule } from '@nestjs/platform-express';
+import { AuthModule } from './auth/Auth.module';
+import { AuthTestModule } from './auth-test/auth-test.module';
+import { MainExceptionFilter } from './exceptionFilters/mainException.filter';
+import { TemplateModule } from './template/template.module';
 import { EmailProviderModule } from './email-provider/email-provider.module';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath: ['.env'],
+            envFilePath: ['.env', '.env.auth'],
         }),
         TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
@@ -24,12 +25,13 @@ import { EmailProviderModule } from './email-provider/email-provider.module';
                 database: configService.get('POSTGRES_DB'),
                 entities: [__dirname + '/**/*.entity{.ts,.js}'],
                 synchronize: true,
+                logNotifications: true,
             }),
             inject: [ConfigService],
         }),
-        TypeOrmModule.forFeature([]),
-        StorageModule,
-        MulterModule.register(),
+        AuthModule,
+        AuthTestModule,
+        TemplateModule,
         EmailProviderModule,
     ],
     controllers: [],

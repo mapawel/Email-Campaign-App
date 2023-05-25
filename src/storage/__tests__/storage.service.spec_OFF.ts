@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { StorageService } from '../storage.service';
 import { ConfigService } from '@nestjs/config';
-import { MainExceptionFilter } from 'src/app-exception-filters/main-exception.filter';
+import { MainExceptionFilter } from '../../exceptionFilters/mainException.filter';
 import * as mock from 'mock-fs';
 import { NotFoundException } from '@nestjs/common';
 import * as fs from 'fs';

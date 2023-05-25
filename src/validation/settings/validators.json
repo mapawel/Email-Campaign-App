@@ -1,0 +1,42 @@
+{
+    "template": {
+        "name": {
+            "minLength": 4,
+            "maxLength": 24
+        },
+        "description": {
+            "minLength": 4,
+            "maxLength": 96
+        },
+        "createdBy": {
+            "minLength": 4,
+            "maxLength": 36
+        },
+        "fileId": {
+            "minLength": 3,
+            "maxLength": 36
+        }
+    },
+    "campaign": {
+        "name": {
+            "minLength": 4,
+            "maxLength": 24
+        },
+        "description": {
+            "minLength": 4,
+            "maxLength": 96
+        },
+        "preparedBy": {
+            "minLength": 4,
+            "maxLength": 36
+        },
+        "eMailTitle": {
+            "minLength": 4,
+            "maxLength": 24
+        },
+        "manager": {
+            "minLength": 4,
+            "maxLength": 36
+        }
+    }
+}
